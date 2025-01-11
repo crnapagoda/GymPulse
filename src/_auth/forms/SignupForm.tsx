@@ -16,7 +16,8 @@ import { useUserContext } from "@/context/AuthContext";
 const SignupForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { checkAuthUser, isPending: isUserLoading } = useUserContext();
+  const { checkAuthUser } = useUserContext();
+  const isUserLoading = false; // or set it to the appropriate loading state if available
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
