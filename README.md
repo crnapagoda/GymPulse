@@ -1,54 +1,36 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+# GymPulse - fitnes društvena mreža
+## Uvod
+GymPulse je veb aplikacija za deljenje postova (fotografija) i interakciju sa korisnicima, razvijena koristeći React, TypeScript i Vite. Aplikacija omogućava korisnicima da prave nove naloge, uređuju iste, kao i da kreiraju, uređuju, lajkuju i čuvaju postove.
+## Instalacija
+Da biste pokrenuli projekat lokalno, potrebno je ispratiti sledeće korake:
+1. Kloniranje repozitorijuma
+```console
+git clone https://github.com/crnapagoda/GymPulse.git
+cd gympulse
 ```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. Instaliranje zavisnosti
+```console
+npm install
 ```
+3. Pokretanje razvojnog servera
+```console
+npm run dev
+```
+4. Otvaranje projekta u pretraživaču odlaskom na [http://localhost:3000](http://localhost:3000) <br><br>
 
+Projektu se takođe može pristupiti online odlaskom na sledeći link: https://gym-pulse-ebon.vercel.app <br><br>
+## Funkcionalnosti
+Aplikacija se sastoji od nekoliko glavnih funkcionalnosti:
+<ul>
+  <li>Registracija i prijava korisnika: Korisnici mogu da se registruju i prijave koristeći email i lozinku. </li>
+  <li>Kreiranje i uređivanje postova: Korisnici mogu da kreiraju nove postove, dodaju slike, lokaciju i tagove, kao i da uređuju postojeće postove. </li>
+  <li>Interakcija sa postovima: Korisici mogu da lajkuju i čuvaju postove</li>
+</ul>
+  <li>•	Uređivanje profila: Korisnici mogu da uređuju svoje profile, kao i da pregledaju tuđe.</li>
+</ul>
+
+
+### Struktura projekta:
 ```
 GymPulse
 ├─ .gitignore
@@ -164,5 +146,17 @@ GymPulse
 ├─ tsconfig.json
 ├─ tsconfig.node.json
 └─ vite.config.ts
-
 ```
+### Opis funkcionalnosti
+Autentifikacija
+<ul>
+  <li>SigninForm.tsx: Forma za prijavu korisnika.</li>
+  <li>SignupForm.tsx: Forma za registraciju korisnika.</li>
+  <li>AuthContext.tsx: Kontekst za upravljanje autentifikacijom korisnika.</li>
+</ul>
+Postovi
+<ul>
+  <li>PostForm.tsx: Forma za kreiranje i uređivanje postova.</li>
+  <li>PostCard.tsx: Komponenta za prikaz pojedinačnog posta.</li>
+  <li>PostStats.tsx: Komponenta za prikaz statistike posta (lajkovi, čuvanja).</li>
+</ul>
