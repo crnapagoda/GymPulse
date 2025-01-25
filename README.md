@@ -148,15 +148,54 @@ GymPulse
 └─ vite.config.ts
 ```
 ### Opis funkcionalnosti
-Autentifikacija
+**Autentifikacija**
 <ul>
   <li>SigninForm.tsx: Forma za prijavu korisnika.</li>
   <li>SignupForm.tsx: Forma za registraciju korisnika.</li>
   <li>AuthContext.tsx: Kontekst za upravljanje autentifikacijom korisnika.</li>
 </ul>
-Postovi
+
+**Postovi**
 <ul>
   <li>PostForm.tsx: Forma za kreiranje i uređivanje postova.</li>
   <li>PostCard.tsx: Komponenta za prikaz pojedinačnog posta.</li>
   <li>PostStats.tsx: Komponenta za prikaz statistike posta (lajkovi, čuvanja).</li>
+</ul>
+
+**Korisnici**
+<ul>
+  <li>UserCard.tsx: Komponenta za prikaz informacija o korisniku.</li>
+  <li>Profile.tsx: Stranica za prikaz profila korisnika.</li>
+  <li>UpdateProfile.tsx: Stranica za ažuriranje profila korisnika.</li>
+</ul>
+
+**Navigacija**
+<ul>
+  <li>BottomBar.tsx: Donji navigacioni bar.</li>
+  <li>LeftSidebar.tsx: Levi navigacioni bar.</li>
+  <li>Topbar.tsx: Gornji navigacioni bar.</li>
+</ul>
+
+**Ostalo**
+<ul>
+  <li>Loader.tsx: Komponenta za prikaz učitavanja.</li>
+  <li>FileUploader.tsx: Komponenta za upload fajlova.</li>
+  <li>GridPostList.tsx: Komponenta za prikaz liste postova u gridu.</li>
+</ul>
+
+**Tehnologije**
+<ul>
+  <li>React: Biblioteka za izgradnju korisničkog interfejsa.</li>
+  <li>TypeScript: Superset JavaScript-a koji dodaje statičku tipizaciju.</li>
+  <li>Vite: Brzi alat za razvoj frontenda.</li>
+  <li>Appwrite: Backend server za autentifikaciju, baze podataka i skladištenje fajlova.</li>
+  <li>React Query: Biblioteka za upravljanje server-state-om.</li>
+  <li>Tailwind CSS: Utility-first CSS framework (umesto gotovih komponenti, stilovi se grade direktno u HTML).</li>
+</ul>
+
+**Dodaci**
+<ul>
+  <li>ESLint: Za statičku analizu koda.</li>
+  <li>Prettier: Za formatiranje koda.</li>
+  <li>Radix UI: Za izgradnju pristupačnih komponenti.</li>
 </ul>
