@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserNotifications, useMarkNotificationAsRead } from '@/lib/react-query/queries';
 import NotificationCard from './NotificationCard';

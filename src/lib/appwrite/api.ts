@@ -351,30 +351,20 @@ export async function deletePost(postId?: string, imageId?: string) {
 }
 
 // ============================== LIKE / UNLIKE POST
-export async function likePost(postId: string, userId: string) {
+export async function likePost(postId: string, likesArray: string[]) {
   try {
-    const post = await databases.getDocument(
+    const updatedPost = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      postId
-    );
-
-    const newLike = await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.likesCollectionId,
-      ID.unique(),
+      postId,
       {
-        user: userId,
-        post: postId,
+        likes: likesArray,
       }
     );
 
-    // Create notification (only if the post is not by the same user)
-    if (post.creator.$id !== userId) {
-      await createNotification(post.creator.$id, userId, 'like', postId);
-    }
+    if (!updatedPost) throw Error;
 
-    return newLike;
+    return updatedPost;
   } catch (error) {
     console.log(error);
   }
