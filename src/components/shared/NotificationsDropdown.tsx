@@ -18,15 +18,11 @@ const NotificationsDropdown = ({
   return (
     <>
       <div 
-        className="fixed inset-0 z-[150] bg-transparent"
-        onClick={onClose}
-      />
-      <div 
         className="fixed inset-0 bg-dark-1/20 backdrop-blur-sm z-[100]" 
         onClick={onClose} 
       />
       <div 
-        className="fixed w-80 bg-dark-2/70 rounded-xl shadow-2xl border border-dark-4/60 overflow-hidden z-[110] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+        className="fixed w-80 bg-dark-2/70 rounded-xl shadow-2xl border border-dark-4/60 overflow-hidden z-[110] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       >
         <div className="p-4 border-b border-dark-4/60 bg-dark-2/70 backdrop-blur-sm flex justify-between items-center">
           <h3 className="text-light-1 font-bold">Notifications</h3>
@@ -58,9 +54,6 @@ const NotificationsDropdown = ({
             ))
           )}
         </div>
-      </div>
-      <div className="fixed inset-0 z-[90] pointer-events-none">
-        <div className="w-full h-full pointer-events-none" />
       </div>
     </>
   );
