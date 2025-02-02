@@ -3,7 +3,7 @@
 ## O Projektu
 GymPulse je moderna društvena mreža namenjena fitness entuzijastima. Aplikacija omogućava deljenje fotografija, interakciju između korisnika i praćenje fitness putovanja, razvijena koristeći najnovije web tehnologije.
 
-![GymPulse Banner](public/assets/images/banner.png)
+![GymPulse Banner](public/assets/images/banner.jpg)
 
 ## 🚀 Glavne Funkcionalnosti
 
