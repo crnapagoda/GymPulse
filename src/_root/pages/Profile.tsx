@@ -6,13 +6,14 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
-
+import { useState } from "react";
 
 import { LikedPosts } from "@/_root/pages";
 import { useUserContext } from "@/context/AuthContext";
-import { useGetUserById } from "@/lib/react-query/queries";
+import { useGetUserById, useGetUserFollowers, useGetUserFollowing, useCheckIsFollowing, useFollowUser, useUnfollowUser } from "@/lib/react-query/queries";
 import { GridPostList, Loader } from "@/components/shared";
 import { Button } from "@/components/ui/button";
+import FollowModal from "@/components/shared/FollowModal";
 
 interface StabBlockProps {
   value: string | number;
@@ -31,14 +32,45 @@ const Profile = () => {
   const { user } = useUserContext();
   const { pathname } = useLocation();
 
-  const { data: currentUser } = useGetUserById(id || "");
+  console.log("Profile ID:", id);
+  console.log("Current user:", user);
 
-  if (!currentUser)
+  const { data: currentUser } = useGetUserById(id || "");
+  const { data: followers } = useGetUserFollowers(currentUser?.$id || "");
+  const { data: following } = useGetUserFollowing(currentUser?.$id || "");
+
+  console.log("Current user data:", currentUser);
+  console.log("Followers data:", followers);
+  console.log("Following data:", following);
+
+  const { data: followingStatus, isLoading: checkingFollow } = useCheckIsFollowing(
+    user?.id || "",
+    currentUser?.$id || ""
+  );
+
+  const { mutate: followUser, isPending: isFollowing } = useFollowUser();
+  const { mutate: unfollowUser, isPending: isUnfollowing } = useUnfollowUser();
+
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+
+  const handleFollowUser = () => {
+    if (!currentUser?.$id || !user?.id) return;
+
+    if (followingStatus) {
+      unfollowUser(followingStatus.$id);
+    } else {
+      followUser({ followerId: user.id, followingId: currentUser.$id });
+    }
+  };
+
+  if (!currentUser || !user?.id) {
     return (
       <div className="flex-center w-full h-full">
         <Loader />
       </div>
     );
+  }
 
   return (
     <div className="profile-container">
@@ -63,8 +95,18 @@ const Profile = () => {
 
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={currentUser.posts.length} label="Posts" />
-              <StatBlock value={20} label="Followers" />
-              <StatBlock value={20} label="Following" />
+              <div 
+                onClick={() => setShowFollowersModal(true)}
+                className="cursor-pointer hover:opacity-75"
+              >
+                <StatBlock value={followers?.total || 0} label="Followers" />
+              </div>
+              <div 
+                onClick={() => setShowFollowingModal(true)}
+                className="cursor-pointer hover:opacity-75"
+              >
+                <StatBlock value={following?.total || 0} label="Following" />
+              </div>
             </div>
 
             <p className="small-medium md:base-medium text-center xl:text-left mt-7 max-w-screen-sm">
@@ -91,8 +133,18 @@ const Profile = () => {
               </Link>
             </div>
             <div className={`${user.id === id && "hidden"}`}>
-              <Button type="button" className="shad-button_primary px-8">
-                Follow
+              <Button 
+                type="button" 
+                className="shad-button_primary px-8"
+                disabled={isFollowing || isUnfollowing || checkingFollow}
+                onClick={handleFollowUser}>
+                {isFollowing || isUnfollowing || checkingFollow ? (
+                  <Loader />
+                ) : followingStatus ? (
+                  "Unfollow"
+                ) : (
+                  "Follow"
+                )}
               </Button>
             </div>
           </div>
@@ -140,6 +192,20 @@ const Profile = () => {
         )}
       </Routes>
       <Outlet />
+
+      <FollowModal
+        isOpen={showFollowersModal}
+        onClose={() => setShowFollowersModal(false)}
+        title="Followers"
+        users={followers?.documents || []}
+      />
+
+      <FollowModal
+        isOpen={showFollowingModal}
+        onClose={() => setShowFollowingModal(false)}
+        title="Following"
+        users={following?.documents || []}
+      />
     </div>
   );
 };

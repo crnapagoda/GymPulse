@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { IUser } from "@/types";
 import { getCurrentUser } from "@/lib/appwrite/api";
+import Loader from "@/components/shared/Loader";
 
 export const INITIAL_USER = {
   id: "",
@@ -37,12 +38,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [user, setUser] = useState<IUser>(INITIAL_USER);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkAuthUser = async () => {
-    setIsLoading(true);
     try {
       const currentAccount = await getCurrentUser();
+      
+      console.log("Current account:", currentAccount);
+
       if (currentAccount) {
         setUser({
           id: currentAccount.$id,
@@ -53,13 +56,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           bio: currentAccount.bio,
         });
         setIsAuthenticated(true);
-
         return true;
       }
 
       return false;
     } catch (error) {
-      console.error(error);
+      console.error("Auth check error:", error);
       return false;
     } finally {
       setIsLoading(false);
@@ -79,16 +81,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuthUser();
   }, []);
 
-  const value = {
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return <AuthContext.Provider value={{
     user,
     setUser,
     isLoading,
     isAuthenticated,
     setIsAuthenticated,
-    checkAuthUser,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    checkAuthUser
+  }}>{children}</AuthContext.Provider>;
 }
 
 export const useUserContext = () => useContext(AuthContext);

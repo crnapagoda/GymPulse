@@ -351,20 +351,30 @@ export async function deletePost(postId?: string, imageId?: string) {
 }
 
 // ============================== LIKE / UNLIKE POST
-export async function likePost(postId: string, likesArray: string[]) {
+export async function likePost(postId: string, userId: string) {
   try {
-    const updatedPost = await databases.updateDocument(
+    const post = await databases.getDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      postId,
+      postId
+    );
+
+    const newLike = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.likesCollectionId,
+      ID.unique(),
       {
-        likes: likesArray,
+        user: userId,
+        post: postId,
       }
     );
 
-    if (!updatedPost) throw Error;
+    // Create notification (only if the post is not by the same user)
+    if (post.creator.$id !== userId) {
+      await createNotification(post.creator.$id, userId, 'like', postId);
+    }
 
-    return updatedPost;
+    return newLike;
   } catch (error) {
     console.log(error);
   }
@@ -540,6 +550,202 @@ export async function updateUser(user: IUpdateUser) {
     }
 
     return updatedUser;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== FOLLOW USER
+export async function followUser(followerId: string, followingId: string) {
+  try {
+    const newFollow = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingCollectionId,
+      ID.unique(),
+      {
+        users: followerId,
+        following: followingId
+      }
+    );
+
+    // Create notification
+    await createNotification(followingId, followerId, 'follow');
+
+    return newFollow;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== UNFOLLOW USER
+export async function unfollowUser(followId: string) {
+  try {
+    const status = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingCollectionId,
+      followId
+    );
+
+    if (!status) throw Error;
+
+    return { status: "Ok" };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== GET USER FOLLOWERS
+export async function getUserFollowers(userId: string) {
+  try {
+    const followers = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingCollectionId,
+      [Query.equal("following", userId)]
+    );
+
+    if (!followers) throw Error;
+
+    // Get the actual user documents for each follower
+    const followerUsers = await Promise.all(
+      followers.documents.map(async (follower) => {
+        const user = await databases.getDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.userCollectionId,
+          follower.users // This is the ID of the user who is following
+        );
+        return user;
+      })
+    );
+
+    return {
+      ...followers,
+      documents: followerUsers
+    };
+  } catch (error) {
+    console.log("Error getting followers:", error);
+    return null;
+  }
+}
+
+// ============================== GET USER FOLLOWING
+export async function getUserFollowing(userId: string) {
+  try {
+    const following = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingCollectionId,
+      [Query.equal("users", userId)]
+    );
+
+    if (!following) throw Error;
+
+    // Get the actual user documents for each following
+    const followingUsers = await Promise.all(
+      following.documents.map(async (follow) => {
+        const user = await databases.getDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.userCollectionId,
+          follow.following // This is the ID of the user being followed
+        );
+        return user;
+      })
+    );
+
+    return {
+      ...following,
+      documents: followingUsers
+    };
+  } catch (error) {
+    console.log("Error getting following:", error);
+    return null;
+  }
+}
+
+// ============================== CHECK IF FOLLOWING
+export async function checkIsFollowing(followerId: string, followingId: string) {
+  try {
+    const following = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.followingCollectionId,
+      [
+        Query.equal("users", followerId),
+        Query.equal("following", followingId)
+      ]
+    );
+
+    return following.documents.length > 0 ? following.documents[0] : null;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== CREATE NOTIFICATION
+export async function createNotification(
+  userId: string,
+  actorId: string,
+  type: 'follow' | 'like',
+  postId?: string
+) {
+  try {
+    const actor = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      actorId
+    );
+
+    const newNotification = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.notificationsCollectionId,
+      ID.unique(),
+      {
+        userId,
+        actorId,
+        actorName: actor.name,
+        actorImageUrl: actor.imageUrl,
+        type,
+        postId,
+        isRead: false,
+        linkTo: type === 'follow' ? `/profile/${actorId}` : `/posts/${postId}`,
+      }
+    );
+
+    return newNotification;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== GET USER NOTIFICATIONS
+export async function getUserNotifications(userId: string) {
+  try {
+    const notifications = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.notificationsCollectionId,
+      [
+        Query.equal('userId', userId),
+        Query.orderDesc('$createdAt'),
+        Query.limit(50)
+      ]
+    );
+
+    return notifications;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== MARK NOTIFICATION AS READ
+export async function markNotificationAsRead(notificationId: string) {
+  try {
+    const updatedNotification = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.notificationsCollectionId,
+      notificationId,
+      {
+        isRead: true
+      }
+    );
+
+    return updatedNotification;
   } catch (error) {
     console.log(error);
   }

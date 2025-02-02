@@ -1,201 +1,114 @@
-# GymPulse - fitnes društvena mreža
-## Uvod
-GymPulse je veb aplikacija za deljenje postova (fotografija) i interakciju sa korisnicima, razvijena koristeći React, TypeScript i Vite. Aplikacija omogućava korisnicima da prave nove naloge, uređuju iste, kao i da kreiraju, uređuju, lajkuju i čuvaju postove.
-## Instalacija
-Da biste pokrenuli projekat lokalno, potrebno je ispratiti sledeće korake:
-1. Kloniranje repozitorijuma
-```console
+# GymPulse 🏋️‍♂️
+
+## O Projektu
+GymPulse je moderna društvena mreža namenjena fitness entuzijastima. Aplikacija omogućava deljenje fotografija, interakciju između korisnika i praćenje fitness putovanja, razvijena koristeći najnovije web tehnologije.
+
+![GymPulse Banner](public/assets/images/logo.svg)
+
+## 🚀 Glavne Funkcionalnosti
+
+### 👤 Korisnici
+- Registracija i prijava pomoću email-a
+- Personalizovani korisnički profili
+- Praćenje drugih korisnika
+- Ažuriranje profila i postavki
+- Notifikacije
+
+### 📱 Postovi
+- Kreiranje postova sa slikama
+- Dodavanje lokacije i tagova
+- Lajkovanje i čuvanje postova
+- Grid i feed prikaz postova
+
+### 🔍 Pretraga
+- Pretraga postova po sadržaju
+- Filtriranje i sortiranje sadržaja
+- Istraživanje popularnih postova
+- Pregled trending tagova
+
+## 🛠️ Tehnički Stack
+
+### Frontend
+- **React** - UI biblioteka
+- **TypeScript** - Tipizacija
+- **Vite** - Build alat
+- **TailwindCSS** - Stilizacija
+- **React Query** - State management
+- **React Router** - Rutiranje
+
+### Backend (Appwrite)
+- Autentifikacija
+- Skladištenje podataka
+- File storage
+- Real-time ažuriranja
+
+## 📦 Instalacija
+
+1. **Kloniranje repozitorijuma**
+```bash
 git clone https://github.com/crnapagoda/GymPulse.git
 cd gympulse
 ```
-2. Instaliranje zavisnosti
-```console
+
+2. **Instaliranje zavisnosti**
+```bash
 npm install
 ```
-3. Pokretanje razvojnog servera
-```console
+
+3. **Konfiguracija okruženja**
+Kreirati `.env` fajl prema `.env.example` template-u:
+```env
+VITE_APPWRITE_PROJECT_ID=your_project_id
+VITE_APPWRITE_URL=your_appwrite_url
+VITE_APPWRITE_STORAGE_ID=your_storage_id
+VITE_APPWRITE_DATABASE_ID=your_database_id
+VITE_APPWRITE_SAVES_COLLECTION_ID=your_saves_collection_id
+VITE_APPWRITE_POST_COLLECTION_ID=your_post_collection_id
+VITE_APPWRITE_USER_COLLECTION_ID=your_user_collection_id
+VITE_APPWRITE_FOLLOWING_COLLECTION_ID=your_following_collection_id
+VITE_APPWRITE_NOTIFICATIONS_COLLECTION_ID=your_notifications_collection_id
+```
+
+4. **Pokretanje aplikacije**
+```bash
 npm run dev
 ```
-4. Otvaranje projekta u pretraživaču odlaskom na [http://localhost:3000](http://localhost:3000) <br><br>
 
-Projektu se takođe može pristupiti online odlaskom na sledeći link: https://gym-pulse-ebon.vercel.app <br><br>
-## Funkcionalnosti
-Aplikacija se sastoji od nekoliko glavnih funkcionalnosti:
-<ul>
-  <li>Registracija i prijava korisnika: Korisnici mogu da se registruju i prijave koristeći email i lozinku. </li>
-  <li>Kreiranje i uređivanje postova: Korisnici mogu da kreiraju nove postove, dodaju slike, lokaciju i tagove, kao i da uređuju postojeće postove. </li>
-  <li>Interakcija sa postovima: Korisici mogu da lajkuju i čuvaju postove</li>
-</ul>
-  <li>•	Uređivanje profila: Korisnici mogu da uređuju svoje profile, kao i da pregledaju tuđe.</li>
-</ul>
+## 🌐 Deployment
+Aplikacija je dostupna na: [https://gym-pulse-ebon.vercel.app](https://gym-pulse-ebon.vercel.app)
 
+## 📁 Struktura Projekta
 
-### Struktura projekta:
-```
-GymPulse
-├─ .gitignore
-├─ components.json
-├─ eslint.config.js
-├─ index.html
-├─ package-lock.json
-├─ package.json
-├─ postcss.config.js
-├─ public
-│  └─ assets
-│     ├─ icons
-│     │  ├─ add-post.svg
-│     │  ├─ back.svg
-│     │  ├─ bookmark.svg
-│     │  ├─ chat.svg
-│     │  ├─ delete.svg
-│     │  ├─ edit.svg
-│     │  ├─ favicon.ico
-│     │  ├─ file-upload.svg
-│     │  ├─ filter.svg
-│     │  ├─ follow.svg
-│     │  ├─ gallery-add.svg
-│     │  ├─ google.svg
-│     │  ├─ home.svg
-│     │  ├─ like.svg
-│     │  ├─ liked.svg
-│     │  ├─ loader.svg
-│     │  ├─ logout.svg
-│     │  ├─ people.svg
-│     │  ├─ posts.svg
-│     │  ├─ profile-placeholder.svg
-│     │  ├─ save.svg
-│     │  ├─ saved.svg
-│     │  ├─ search.svg
-│     │  ├─ share.svg
-│     │  └─ wallpaper.svg
-│     └─ images
-│        ├─ logo.svg
-│        ├─ profile.png
-│        └─ side-img.svg
-├─ README.md
-├─ src
-│  ├─ App.tsx
-│  ├─ components
-│  │  ├─ forms
-│  │  │  └─ PostForm.tsx
-│  │  ├─ shared
-│  │  │  ├─ BottomBar.tsx
-│  │  │  ├─ FileUploader.tsx
-│  │  │  ├─ GridPostList.tsx
-│  │  │  ├─ index.ts
-│  │  │  ├─ LeftSidebar.tsx
-│  │  │  ├─ Loader.tsx
-│  │  │  ├─ PostCard.tsx
-│  │  │  ├─ PostStats.tsx
-│  │  │  ├─ ProfileUploader.tsx
-│  │  │  ├─ Topbar.tsx
-│  │  │  └─ UserCard.tsx
-│  │  └─ ui
-│  │     ├─ button.tsx
-│  │     ├─ form.tsx
-│  │     ├─ input.tsx
-│  │     ├─ label.tsx
-│  │     ├─ textarea.tsx
-│  │     ├─ toast.tsx
-│  │     └─ toaster.tsx
-│  ├─ constants
-│  │  └─ index.ts
-│  ├─ context
-│  │  └─ AuthContext.tsx
-│  ├─ globals.css
-│  ├─ globals.d.ts
-│  ├─ hooks
-│  │  ├─ use-toast.ts
-│  │  └─ useDebounce.ts
-│  ├─ lib
-│  │  ├─ appwrite
-│  │  │  ├─ api.ts
-│  │  │  └─ config.ts
-│  │  ├─ react-query
-│  │  │  ├─ queries.ts
-│  │  │  ├─ queryKeys.ts
-│  │  │  └─ QueryProvider.tsx
-│  │  ├─ utils.ts
-│  │  └─ validation
-│  │     └─ index.ts
-│  ├─ main.tsx
-│  ├─ types
-│  │  └─ index.ts
-│  ├─ vite.env.d.ts
-│  ├─ _auth
-│  │  ├─ AuthLayout.tsx
-│  │  └─ forms
-│  │     ├─ SigninForm.tsx
-│  │     └─ SignupForm.tsx
-│  └─ _root
-│     ├─ pages
-│     │  ├─ AllUsers.tsx
-│     │  ├─ CreatePost.tsx
-│     │  ├─ EditPost.tsx
-│     │  ├─ Explore.tsx
-│     │  ├─ Home.tsx
-│     │  ├─ index.ts
-│     │  ├─ LikedPosts.tsx
-│     │  ├─ PostDetails.tsx
-│     │  ├─ Profile.tsx
-│     │  ├─ Saved.tsx
-│     │  └─ UpdateProfile.tsx
-│     └─ RootLayout.tsx
-├─ tailwind.config.js
-├─ tsconfig.app.json
-├─ tsconfig.json
-├─ tsconfig.node.json
-└─ vite.config.ts
-```
-### Opis funkcionalnosti
-**Autentifikacija**
-<ul>
-  <li>SigninForm.tsx: Forma za prijavu korisnika.</li>
-  <li>SignupForm.tsx: Forma za registraciju korisnika.</li>
-  <li>AuthContext.tsx: Kontekst za upravljanje autentifikacijom korisnika.</li>
-</ul>
+### Ključne komponente
+- `src/_auth/*` - Autentifikacione komponente
+- `src/components/*` - Deljene komponente
+- `src/_root/pages/*` - Stranice aplikacije
+- `src/lib/*` - Pomoćne funkcije i konfiguracija
 
-**Postovi**
-<ul>
-  <li>PostForm.tsx: Forma za kreiranje i uređivanje postova.</li>
-  <li>PostCard.tsx: Komponenta za prikaz pojedinačnog posta.</li>
-  <li>PostStats.tsx: Komponenta za prikaz statistike posta (lajkovi, čuvanja).</li>
-</ul>
+### Stilizacija
+- `src/globals.css` - Globalni stilovi
 
-**Korisnici**
-<ul>
-  <li>UserCard.tsx: Komponenta za prikaz informacija o korisniku.</li>
-  <li>Profile.tsx: Stranica za prikaz profila korisnika.</li>
-  <li>UpdateProfile.tsx: Stranica za ažuriranje profila korisnika.</li>
-</ul>
+### Konfiguracija
+- `src/lib/config.ts` - Konfiguracija Appwrite
+- `src/lib/queries/*` - React Query zakonskih upita
 
-**Navigacija**
-<ul>
-  <li>BottomBar.tsx: Donji navigacioni bar.</li>
-  <li>LeftSidebar.tsx: Levi navigacioni bar.</li>
-  <li>Topbar.tsx: Gornji navigacioni bar.</li>
-</ul>
+## 🤝 Doprinošenje Projektu
 
-**Ostalo**
-<ul>
-  <li>Loader.tsx: Komponenta za prikaz učitavanja.</li>
-  <li>FileUploader.tsx: Komponenta za upload fajlova.</li>
-  <li>GridPostList.tsx: Komponenta za prikaz liste postova u gridu.</li>
-</ul>
+1. Fork repozitorijuma
+2. Kreiranje feature branch-a (`git checkout -b feature/AmazingFeature`)
+3. Commit izmena (`git commit -m 'Add some AmazingFeature'`)
+4. Push na branch (`git push origin feature/AmazingFeature`)
+5. Otvaranje Pull Request-a
 
-**Tehnologije**
-<ul>
-  <li>React: Biblioteka za izgradnju korisničkog interfejsa.</li>
-  <li>TypeScript: Superset JavaScript-a koji dodaje statičku tipizaciju.</li>
-  <li>Vite: Brzi alat za razvoj frontenda.</li>
-  <li>Appwrite: Backend server za autentifikaciju, baze podataka i skladištenje fajlova.</li>
-  <li>React Query: Biblioteka za upravljanje server-state-om.</li>
-  <li>Tailwind CSS: Utility-first CSS framework (umesto gotovih komponenti, stilovi se grade direktno u HTML).</li>
-</ul>
+## 📝 Licenca
+MIT License - pogledajte `LICENSE` fajl za detalje
 
-**Dodaci**
-<ul>
-  <li>ESLint: Za statičku analizu koda.</li>
-  <li>Prettier: Za formatiranje koda.</li>
-  <li>Radix UI: Za izgradnju pristupačnih komponenti.</li>
-</ul>
+## 🔗 Korisni Linkovi
+- [Dokumentacija](https://github.com/crnapagoda/GymPulse/wiki)
+- [Prijava Bugova](https://github.com/crnapagoda/GymPulse/issues)
+- [Appwrite Dokumentacija](https://appwrite.io/docs)
+
+## 📊 Status Projekta
+![GitHub Stars](https://img.shields.io/github/stars/crnapagoda/GymPulse)
+![GitHub Issues](https://img.shields.io/github/issues/crnapagoda/GymPulse)
+![GitHub Pull Requests](https://img.shields.io/github/issues-pr/crnapagoda/GymPulse)

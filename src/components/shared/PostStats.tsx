@@ -8,6 +8,7 @@ import {
   useSavePost,
   useDeleteSavedPost,
   useGetCurrentUser,
+  useCreateNotification,
 } from "@/lib/react-query/queries";
 
 type PostStatsProps = {
@@ -25,6 +26,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   const { mutate: likePost } = useLikePost();
   const { mutate: savePost } = useSavePost();
   const { mutate: deleteSavePost } = useDeleteSavedPost();
+  const { mutate: createNotification } = useCreateNotification();
 
   const { data: currentUser } = useGetCurrentUser();
 
@@ -41,16 +43,25 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   ) => {
     e.stopPropagation();
 
-    let likesArray = [...likes];
+    let newLikes = [...likes];
+    const hasLiked = newLikes.includes(userId);
 
-    if (likesArray.includes(userId)) {
-      likesArray = likesArray.filter((Id) => Id !== userId);
+    if (hasLiked) {
+      newLikes = newLikes.filter((id) => id !== userId);
     } else {
-      likesArray.push(userId);
+      newLikes.push(userId);
+      if (post.creator.$id !== userId) {
+        createNotification({
+          userId: post.creator.$id,
+          actorId: userId,
+          type: 'like',
+          postId: post.$id
+        });
+      }
     }
 
-    setLikes(likesArray);
-    likePost({ postId: post.$id, likesArray });
+    setLikes(newLikes);
+    likePost({ postId: post.$id, likesArray: newLikes });
   };
 
   const handleSavePost = (

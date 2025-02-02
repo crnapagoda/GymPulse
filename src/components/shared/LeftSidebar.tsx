@@ -1,11 +1,13 @@
+import { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { INavLink } from "@/types";
 import { sidebarLinks } from "@/constants";
 import { Loader } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { useSignOutAccount } from "@/lib/react-query/queries";
+import { useSignOutAccount, useGetUserNotifications } from "@/lib/react-query/queries";
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
@@ -13,6 +15,11 @@ const LeftSidebar = () => {
   const { user, setUser, setIsAuthenticated } = useUserContext();
 
   const { mutate: signOut } = useSignOutAccount();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationButtonRef = useRef<HTMLDivElement>(null);
+  const { data: notifications } = useGetUserNotifications(user.id);
+
+  const unreadCount = notifications?.documents.filter(n => !n.isRead).length || 0;
 
   const handleSignOut = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -79,16 +86,43 @@ const LeftSidebar = () => {
               </li>
             );
           })}
+
+          <li className="leftsidebar-link group hidden md:block">
+            <div 
+              ref={notificationButtonRef}
+              className="flex gap-4 items-center p-4 cursor-pointer" 
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              <img
+                src="/assets/icons/notification.svg"
+                alt="notifications"
+                className={`group-hover:invert-white ${
+                  showNotifications && "invert-white"
+                }`}
+              />
+              <span>Notifications</span>
+              {unreadCount > 0 && (
+                <div className="w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center ml-auto">
+                  <span className="text-white text-xs">{unreadCount}</span>
+                </div>
+              )}
+            </div>
+          </li>
         </ul>
       </div>
 
       <Button
         variant="ghost"
         className="shad-button_ghost"
-        onClick={(e) => handleSignOut(e)}>
+        onClick={handleSignOut}>
         <img src="/assets/icons/logout.svg" alt="logout" />
         <p className="small-medium lg:base-medium">Logout</p>
       </Button>
+
+      <NotificationsDropdown 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)}
+      />
     </nav>
   );
 };

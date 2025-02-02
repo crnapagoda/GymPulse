@@ -1,14 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "../ui/button";
 import { useUserContext } from "@/context/AuthContext";
-import { useSignOutAccount } from "@/lib/react-query/queries";
+import { useSignOutAccount, useGetUserNotifications } from "@/lib/react-query/queries";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 const Topbar = () => {
   const navigate = useNavigate();
   const { user } = useUserContext();
   const { mutate: signOut, isSuccess } = useSignOutAccount();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const { data: notifications } = useGetUserNotifications(user.id);
+
+  const unreadCount = notifications?.documents.filter(n => !n.isRead).length || 0;
 
   useEffect(() => {
     if (isSuccess) navigate(0);
@@ -26,7 +31,25 @@ const Topbar = () => {
           />
         </Link>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 md:hidden lg:flex">
+          <div className="relative">
+            <Button
+              variant="ghost"
+              className="shad-button_ghost"
+              onClick={() => setShowNotifications(!showNotifications)}>
+              <img src="/assets/icons/notification.svg" alt="notifications" />
+              {unreadCount > 0 && (
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary-500 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">{unreadCount}</span>
+                </div>
+              )}
+            </Button>
+            <NotificationsDropdown 
+              isOpen={showNotifications} 
+              onClose={() => setShowNotifications(false)} 
+            />
+          </div>
+
           <Button
             variant="ghost"
             className="shad-button_ghost"

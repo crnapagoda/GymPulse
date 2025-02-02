@@ -90,18 +90,18 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 2px;
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.3);
+    background-color: transparent;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.5);
-    border-radius: 50px;
+    background-color: #666;
+    border-radius: 3px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -228,7 +228,7 @@
 
   /* Post Card */
   .post-card {
-    @apply bg-gympulse-postcard rounded-3xl  p-5 lg:p-7 w-full max-w-screen-sm;
+    @apply bg-gympulse-postcard rounded-3xl p-5 lg:p-7 w-full max-w-screen-sm z-10;
   }
 
   .post-card_img {
@@ -237,12 +237,22 @@
 
   /* Topbar */
   .topbar {
-    @apply sticky top-0 z-50 md:hidden bg-gympulse-sidebar;
+    @apply sticky top-0 z-20 md:hidden bg-gympulse-sidebar w-full;
   }
 
   /* User card */
   .user-card {
     @apply  bg-gympulse-field hover:bg-gympulse-postcard flex-center flex-col gap-4   rounded-[25px] px-5 py-8;
+  }
+
+  /* Add this new class for the backdrop */
+  .modal-backdrop {
+    @apply fixed inset-0 bg-dark-1/20 backdrop-blur-sm z-30;
+  }
+
+  /* Add this for modal content */
+  .modal-content {
+    @apply z-50;
   }
 }
 

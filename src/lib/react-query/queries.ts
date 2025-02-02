@@ -25,6 +25,14 @@ import {
     searchPosts,
     savePost,
     deleteSavedPost,
+    followUser,
+    unfollowUser,
+    getUserFollowers,
+    getUserFollowing,
+    checkIsFollowing,
+    getUserNotifications,
+    markNotificationAsRead,
+    createNotification,
   } from "@/lib/appwrite/api";
   import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
@@ -244,5 +252,107 @@ import { QUERY_KEYS } from "./queryKeys";
           queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
         });
       },
+    });
+  };
+  
+  // ============================================================
+  // FOLLOW QUERIES
+  // ============================================================
+  
+  export const useFollowUser = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation({
+      mutationFn: ({ followerId, followingId }: { followerId: string, followingId: string }) => 
+        followUser(followerId, followingId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_USER_FOLLOWERS],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_USER_FOLLOWING],
+        });
+      },
+    });
+  };
+  
+  export const useUnfollowUser = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation({
+      mutationFn: (followId: string) => unfollowUser(followId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_USER_FOLLOWERS],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_USER_FOLLOWING],
+        });
+      },
+    });
+  };
+  
+  export const useGetUserFollowers = (userId: string) => {
+    return useQuery({
+      queryKey: [QUERY_KEYS.GET_USER_FOLLOWERS, userId],
+      queryFn: () => getUserFollowers(userId),
+      enabled: !!userId,
+    });
+  };
+  
+  export const useGetUserFollowing = (userId: string) => {
+    return useQuery({
+      queryKey: [QUERY_KEYS.GET_USER_FOLLOWING, userId],
+      queryFn: () => getUserFollowing(userId),
+      enabled: !!userId,
+    });
+  };
+  
+  export const useCheckIsFollowing = (followerId: string, followingId: string) => {
+    return useQuery({
+      queryKey: [QUERY_KEYS.CHECK_IS_FOLLOWING, followerId, followingId],
+      queryFn: () => checkIsFollowing(followerId, followingId),
+      enabled: !!followerId && !!followingId,
+    });
+  };
+  
+  // ============================================================
+  // NOTIFICATION QUERIES
+  // ============================================================
+  
+  export const useGetUserNotifications = (userId: string) => {
+    return useQuery({
+      queryKey: [QUERY_KEYS.GET_USER_NOTIFICATIONS, userId],
+      queryFn: () => getUserNotifications(userId),
+      enabled: !!userId,
+    });
+  };
+  
+  export const useMarkNotificationAsRead = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation({
+      mutationFn: (notificationId: string) => markNotificationAsRead(notificationId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_USER_NOTIFICATIONS],
+        });
+      },
+    });
+  };
+
+  export const useCreateNotification = () => {
+    return useMutation({
+      mutationFn: (variables: {
+        userId: string;
+        actorId: string;
+        type: 'follow' | 'like';
+        postId?: string;
+      }) => createNotification(
+        variables.userId,
+        variables.actorId,
+        variables.type,
+        variables.postId
+      )
     });
   };
