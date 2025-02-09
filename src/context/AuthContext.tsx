@@ -68,31 +68,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  useEffect(() => {
-    const cookieFallback = localStorage.getItem("cookieFallback");
-    if (
-      cookieFallback === "[]" ||
-      cookieFallback === null ||
-      cookieFallback === undefined
-    ) {
-      navigate("/sign-in");
-    }
 
-    checkAuthUser();
+  useEffect(() => {
+    const checkSession = async () => {
+      const isAuthenticated = await checkAuthUser();
+      if (!isAuthenticated) {
+        navigate("/sign-in");
+      }
+    };
+
+    checkSession();
   }, []);
 
   if (isLoading) {
     return <Loader />;
   }
 
-  return <AuthContext.Provider value={{
-    user,
-    setUser,
-    isLoading,
-    isAuthenticated,
-    setIsAuthenticated,
-    checkAuthUser
-  }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{
+      user,
+      setUser,
+      isLoading,
+      isAuthenticated,
+      setIsAuthenticated,
+      checkAuthUser
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export const useUserContext = () => useContext(AuthContext);

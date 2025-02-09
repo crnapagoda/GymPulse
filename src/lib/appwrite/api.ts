@@ -61,6 +61,9 @@ export async function saveUserToDB(user: {
 // ============================== SIGN IN
 export async function signInAccount(user: { email: string; password: string }) {
   try {
+    // Ensure no active session before creating a new one
+    await signOutAccount();
+
     const session = await account.createEmailSession(user.email, user.password);
 
     return session;
@@ -738,5 +741,42 @@ export async function markNotificationAsRead(notificationId: string) {
     return updatedNotification;
   } catch (error) {
     console.log(error);
+  }
+}
+
+// ============================== DELETE USER ACCOUNT
+export async function deleteUserAccount(userId: string) {
+  try {
+    // Delete all posts by the user
+    const userPosts = await getUserPosts(userId);
+    if (userPosts?.documents) {
+      for (const post of userPosts.documents) {
+        await deletePost(post.$id, post.imageId);
+      }
+    }
+
+    // Check if user document exists before attempting to delete
+    const userDocument = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      userId
+    );
+
+    if (userDocument) {
+      // Delete user document
+      await databases.deleteDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.userCollectionId,
+        userId
+      );
+    }
+
+    // Delete current session
+    await account.deleteSession("current");
+
+    return { status: "Ok" };
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }

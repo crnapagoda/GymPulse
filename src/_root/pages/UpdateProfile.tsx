@@ -2,6 +2,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 
 import {
   Form,
@@ -12,12 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-
 import { ProfileUploader, Loader } from "@/components/shared";
+import ConfirmationModal from "@/components/shared/ConfirmationModal";
 
-
-import { useUserContext } from "@/context/AuthContext";
-import { useGetUserById, useUpdateUser } from "@/lib/react-query/queries";
+import { INITIAL_USER, useUserContext } from "@/context/AuthContext";
+import { useGetUserById, useUpdateUser, useDeleteUserAccount } from "@/lib/react-query/queries";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,7 +28,7 @@ const UpdateProfile = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user, setUser } = useUserContext();
+  const { user, setUser, setIsAuthenticated } = useUserContext();
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
@@ -44,6 +44,8 @@ const UpdateProfile = () => {
   const { data: currentUser } = useGetUserById(id || "");
   const { mutateAsync: updateUser, isPending: isLoadingUpdate } =
     useUpdateUser();
+  const { mutateAsync: deleteUserAccount } = useDeleteUserAccount();
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   if (!currentUser)
     return (
@@ -76,6 +78,13 @@ const UpdateProfile = () => {
       imageUrl: updatedUser?.imageUrl,
     });
     return navigate(`/profile/${id}`);
+  };
+
+  const handleDeleteAccount = async () => {
+    await deleteUserAccount(currentUser.$id);
+    setUser(INITIAL_USER);
+    setIsAuthenticated(false);
+    navigate("/sign-in");
   };
 
   return (
@@ -184,6 +193,13 @@ const UpdateProfile = () => {
             <div className="flex gap-4 items-center justify-end">
               <Button
                 type="button"
+                className="shad-button_delete"
+                onClick={() => setShowConfirmationModal(true)}
+                style={{ marginRight: 'auto' }}>
+                Delete Account
+              </Button>
+              <Button
+                type="button"
                 className="shad-button_dark_4"
                 onClick={() => navigate(-1)}>
                 Cancel
@@ -199,6 +215,11 @@ const UpdateProfile = () => {
           </form>
         </Form>
       </div>
+      <ConfirmationModal
+        isOpen={showConfirmationModal}
+        onClose={() => setShowConfirmationModal(false)}
+        onConfirm={handleDeleteAccount}
+      />
     </div>
   );
 };

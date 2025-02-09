@@ -283,6 +283,9 @@
   .shad-button_dark_4 {
     @apply  bg-gympulse-sidebar px-5 hover:bg-light-1 hover:text-dark-1 text-light-1 flex gap-2 !important;
   }
+  .shad-button_delete {
+    @apply  bg-gympulse-sidebar px-5 hover:bg-rose-600 hover:text-light-1 text-light-1 flex gap-2 !important;
+  }
 
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;

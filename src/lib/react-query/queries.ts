@@ -33,6 +33,7 @@ import {
     getUserNotifications,
     markNotificationAsRead,
     createNotification,
+    deleteUserAccount,
   } from "@/lib/appwrite/api";
   import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
 import { QUERY_KEYS } from "./queryKeys";
@@ -250,6 +251,18 @@ import { QUERY_KEYS } from "./queryKeys";
         });
         queryClient.invalidateQueries({
           queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
+        });
+      },
+    });
+  };
+
+  export const useDeleteUserAccount = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+      mutationFn: (userId: string) => deleteUserAccount(userId),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_USERS],
         });
       },
     });
