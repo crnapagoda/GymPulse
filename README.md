@@ -1,62 +1,63 @@
 # GymPulse 🏋️‍♂️
 
-## O Projektu
-GymPulse je moderna društvena mreža namenjena fitness entuzijastima. Aplikacija omogućava deljenje fotografija, interakciju između korisnika i praćenje fitness putovanja, razvijena koristeći najnovije web tehnologije.
+## About the Project
+GymPulse is a modern social network designed for fitness enthusiasts. The application allows sharing photos, interacting with other users, and tracking fitness journeys, developed using the latest web technologies.
 
 ![GymPulse Banner](public/assets/images/banner.jpg)
 
-## 🚀 Glavne Funkcionalnosti
+## 🚀 Main Features
 
-### 👤 Korisnici
-- Registracija i prijava pomoću email-a
-- Personalizovani korisnički profili
-- Praćenje drugih korisnika
-- Ažuriranje profila i postavki
-- Notifikacije
+### 👤 Users
+- Registration and login via email
+- Personalized user profiles
+- Following other users
+- Updating profile and settings
+- Notifications
+- Account deletion
 
-### 📱 Postovi
-- Kreiranje postova sa slikama
-- Dodavanje lokacije i tagova
-- Lajkovanje i čuvanje postova
-- Grid i feed prikaz postova
+### 📱 Posts
+- Creating posts with images
+- Adding location and tags
+- Liking and saving posts
+- Grid and feed view of posts
 
-### 🔍 Pretraga
-- Pretraga postova po sadržaju
-- Filtriranje i sortiranje sadržaja
-- Istraživanje popularnih postova
-- Pregled trending tagova
+### 🔍 Search
+- Searching posts by content
+- Filtering and sorting content
+- Exploring popular posts
+- Viewing trending tags
 
-## 🛠️ Tehnički Stack
+## 🛠️ Technical Stack
 
 ### Frontend
-- **React** - UI biblioteka
-- **TypeScript** - Tipizacija
-- **Vite** - Build alat
-- **TailwindCSS** - Stilizacija
+- **React** - UI library
+- **TypeScript** - Typing
+- **Vite** - Build tool
+- **TailwindCSS** - Styling
 - **React Query** - State management
-- **React Router** - Rutiranje
+- **React Router** - Routing
 
 ### Backend (Appwrite)
-- Autentifikacija
-- Skladištenje podataka
+- Authentication
+- Data storage
 - File storage
-- Real-time ažuriranja
+- Real-time updates
 
-## 📦 Instalacija
+## 📦 Installation
 
-1. **Kloniranje repozitorijuma**
+1. **Clone the repository**
 ```bash
 git clone https://github.com/crnapagoda/GymPulse.git
 cd gympulse
 ```
 
-2. **Instaliranje zavisnosti**
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Konfiguracija okruženja**
-Kreirati `.env` fajl prema `.env.example` template-u:
+3. **Configure environment**
+Create a `.env` file based on the `.env.example` template:
 ```env
 VITE_APPWRITE_PROJECT_ID=your_project_id
 VITE_APPWRITE_URL=your_appwrite_url
@@ -69,46 +70,46 @@ VITE_APPWRITE_FOLLOWING_COLLECTION_ID=your_following_collection_id
 VITE_APPWRITE_NOTIFICATIONS_COLLECTION_ID=your_notifications_collection_id
 ```
 
-4. **Pokretanje aplikacije**
+4. **Run the application**
 ```bash
 npm run dev
 ```
 
 ## 🌐 Deployment
-Aplikacija je dostupna na: [https://gym-pulse-ebon.vercel.app](https://gym-pulse-ebon.vercel.app)
+The application is available at: [https://gym-pulse-ebon.vercel.app](https://gym-pulse-ebon.vercel.app)
 
-## 📁 Struktura Projekta
+## 📁 Project Structure
 
-### Ključne komponente
-- `src/_auth/*` - Autentifikacione komponente
-- `src/components/*` - Deljene komponente
-- `src/_root/pages/*` - Stranice aplikacije
-- `src/lib/*` - Pomoćne funkcije i konfiguracija
+### Key Components
+- `src/_auth/*` - Authentication components
+- `src/components/*` - Shared components
+- `src/_root/pages/*` - Application pages
+- `src/lib/*` - Utility functions and configuration
 
-### Stilizacija
-- `src/globals.css` - Globalni stilovi
+### Styling
+- `src/globals.css` - Global styles
 
-### Konfiguracija
-- `src/lib/config.ts` - Konfiguracija Appwrite
-- `src/lib/queries/*` - React Query zakonskih upita
+### Configuration
+- `src/lib/config.ts` - Appwrite configuration
+- `src/lib/queries/*` - React Query hooks
 
-## 🤝 Doprinošenje Projektu
+## 🤝 Contributing to the Project
 
-1. Fork repozitorijuma
-2. Kreiranje feature branch-a (`git checkout -b feature/AmazingFeature`)
-3. Commit izmena (`git commit -m 'Add some AmazingFeature'`)
-4. Push na branch (`git push origin feature/AmazingFeature`)
-5. Otvaranje Pull Request-a
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📝 Licenca
-MIT License - pogledajte `LICENSE` fajl za detalje
+## 📝 License
+MIT License - see the `LICENSE` file for details
 
-## 🔗 Korisni Linkovi
-- [Dokumentacija](https://github.com/crnapagoda/GymPulse/wiki)
-- [Prijava Bugova](https://github.com/crnapagoda/GymPulse/issues)
-- [Appwrite Dokumentacija](https://appwrite.io/docs)
+## 🔗 Useful Links
+- [Documentation](https://github.com/crnapagoda/GymPulse/wiki)
+- [Report Bugs](https://github.com/crnapagoda/GymPulse/issues)
+- [Appwrite Documentation](https://appwrite.io/docs)
 
-## 📊 Status Projekta
+## 📊 Project Status
 ![GitHub Stars](https://img.shields.io/github/stars/crnapagoda/GymPulse)
 ![GitHub Issues](https://img.shields.io/github/issues/crnapagoda/GymPulse)
 ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/crnapagoda/GymPulse)
