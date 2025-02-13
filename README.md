@@ -1,7 +1,7 @@
 # GymPulse 🏋️‍♂️
 
 ## About the Project
-GymPulse is a modern social network designed for fitness enthusiasts. The application allows sharing photos, interacting with other users, and tracking fitness journeys, developed using the latest web technologies.
+GymPulse is a social networking platform tailored for fitness enthusiasts. It enables users to share their fitness journeys through photos, connect with others, and track their progress. Built with modern web technologies, GymPulse offers features like user registration, personalized profiles, post creation, and real-time interactions, all designed to foster a supportive fitness community.
 
 ![GymPulse Banner](public/assets/images/banner.jpg)
 
